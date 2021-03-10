@@ -1,16 +1,15 @@
-var express = require("express");
-var router = express.Router();
+let express = require("express");
+let router = express.Router();
 
 // 引入连接数据库模块
-const connection = require("./conn");
-
-// 连接数据库
-connection.connect(() => {
-  console.log("数据库连接成功!");
-});
+const handleDisconnection = require("./conn");
 
 // 接收登录请求
 router.post("/api/checklogin", (req, res) => {
+  //连接数据库
+  handleDisconnection();
+  //获取connection
+  const connection = require("./conn");
   // 接收用户名和密码
   let { userName, passWord } = req.body;
   console.log(userName, passWord);
@@ -29,6 +28,10 @@ router.post("/api/checklogin", (req, res) => {
 
 // 接收获取用户列表的请求
 router.get("/api/getuserlist", (req, res) => {
+  //连接数据库
+  handleDisconnection();
+  //获取connection
+  const connection = require("./conn")
   //  查询数据库 把当前所有用户数据 返回给前端
   const sqlStr = "select * from users";
   connection.query(sqlStr, (err, data) => {
